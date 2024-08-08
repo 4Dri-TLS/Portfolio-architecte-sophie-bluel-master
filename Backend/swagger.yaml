@@ -108,7 +108,6 @@ paths:
      summary: Send a new Work
      security:
        - BearerAuth: []
-
      requestBody:
        required: true
        content:
@@ -171,12 +170,47 @@ paths:
          description: Unauthorized
        '500':
          description: Unexpected Behaviour
+  /content:
+    post:
+      summary: Save content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: Content saved successfully
+        '500':
+          description: Failed to save content
 
+    get:
+      summary: Get content
+      responses:
+        '200':
+          description: Content fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+        '404':
+          description: Content not found
+        '500':
+          description: Failed to fetch content
 components:
   securitySchemes:
-   BearerAuth:
-     type: http
-     scheme: bearer
+    BearerAuth:
+      type: http
+      scheme: bearer
 securityDefinitions:
   Bearer:
     type: JWT

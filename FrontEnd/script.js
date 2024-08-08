@@ -1,3 +1,28 @@
+///// Contenu texte présentation
+async function recupText() { // Récupération du texte
+    try {
+        const response = await fetch("http://localhost:5678/api/content");
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ! status: ${response.status}`);
+        }
+        const data = await response.json();
+        generateText(data);
+        return data; // Retourne le texte
+    } catch (error) {
+        console.error('Impossible de récupérer le texte', error);
+    }
+}
+
+function generateText(content) {
+    const container = document.getElementById('texte-intro'); // Place le contenu qui va être créé dans le conteneur ayant cet ID dans le HTML
+    container.innerHTML = ''; // Supprime le contenu initial du conteneur
+    
+    const p = document.createElement('p');
+    p.innerHTML = content.value; // Va chercher la propriété 'value' dans 'content'
+    container.appendChild(p); // Ajoute le nouvel élément
+}
+
+
 ///// PROJETS
 async function recupWorks() { // Récupération des Projets
     try {
@@ -93,5 +118,6 @@ async function filterWorks(categoryId) {
 }
 
 // Appeler les fonctions initiales (doit être à la fin)
+recupText();
 recupWorks();
 recupCategories();
