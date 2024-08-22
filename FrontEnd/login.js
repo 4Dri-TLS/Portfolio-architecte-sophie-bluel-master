@@ -18,7 +18,7 @@ document.getElementById('connexion').addEventListener('submit', async function(e
         if (response.ok) {
             document.getElementById('message').innerText = 'Vous êtes connectés !';
             localStorage.setItem('token', data.token);
-            window.location.href = 'homepage-edit.html'; // Redirect to a protected page
+            window.location.href = 'index.html'; // Redirige vers une page après la connexion
         } else {
             document.getElementById('message').innerText = 'Email ou mot de passe incorrect : ' + data.message;
         }

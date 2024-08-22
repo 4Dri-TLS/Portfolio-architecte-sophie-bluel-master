@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const editableContent = document.getElementById('editable-content');
+    const editableContent = document.getElementById('texte-intro');
 
-    // Fetch existing content on page load
+    // Récupérer le contenu existant au chargement de la page
     const fetchContent = async () => {
         try {
             const response = await fetch('http://localhost:5678/api/content', {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchContent();
 
-    // Autosave function
+    // Fonctionnalité de sauvegarde auto
     const autosave = async () => {
         const content = editableContent.innerHTML;
         const token = localStorage.getItem('token');
@@ -40,17 +40,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to save content');
+                throw new Error('Erreur enregistrement du contenu');
             }
 
             const data = await response.json();
-            console.log('Content saved:', data);
+            console.log('contenu sauvegardé :', data);
         } catch (error) {
-            console.error('Error saving content:', error);
+            console.error('Erreur enregistrement du contenu :', error);
         }
     };
 
-    // Debounce function to limit the rate at which the autosave function is called
+    // Fonction Debounce pour limiter la vitesse à laquelle la fonction autosave est appelée
     const debounce = (func, delay) => {
         let debounceTimer;
         return function() {
@@ -59,6 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     };
 
-    // Attach autosave function to content change event with debounce
+    // la fonction es appelée lors de l'édition de l'input. Un temps est précisé
     editableContent.addEventListener('input', debounce(autosave, 1000));
 });

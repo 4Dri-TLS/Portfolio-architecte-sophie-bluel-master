@@ -1,8 +1,8 @@
+/******** NON-CONNECTÉ *********/
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -297,4 +297,233 @@ footer nav ul {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	cursor: pointer;
+}
+
+
+
+/* Quand CONNECTÉ */
+
+.bannière-edit {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0px;
+	width: 100%;
+	height: 59px;
+	background-color: black;
+	color: white;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	box-sizing: border-box;
+	z-index: 1000; /* maintient la bannière noire en haut de page */
+}
+
+.message-bannière {
+	font-size: 16px;
+	padding-top: 21,5px;
+	font-family: 'Work Sans';
+}
+
+
+
+
+.Projets-edit {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	margin-bottom: 100px;
+}
+
+.Projets-edit h2 {
+	margin-left: 79.45px;
+}
+
+.Projets-edit i {
+	margin-top: 7.75px;
+	margin-left: 25px;
+
+}
+.Projets-edit a {
+	margin-top: 7.75px;
+}
+
+
+.editmode {
+	max-width: 1140px;
+	margin: auto;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	position: relative;
+	padding-top: 59px; /* Ajoute l'espace qu'occupe la banière */
+}
+
+
+
+
+
+/* Modale */
+.modal {
+	display: none; /* Cachée par défaut */
+	position: fixed;
+	z-index: 1;
+	padding-top: 60px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4); /* Opacité */
+	margin-top: 15px;
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: solid 0px;
+	width: 80%;
+	max-width: 900px;
+	position: relative;
+	border-radius: 10px;
+}
+
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.gallery-modal {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.gallery-modal img {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+.delete-icon {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.add-photo-btn {
+	display: block;
+	margin: 20px auto;
+	padding: 10px 20px;
+	background-color: #2C6351;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* Gestion des Écrans de la modale */
+.screen-level {
+    display: none; /* cache tous les écrans par défaut */
+}
+
+#galleryScreen.active, /* rend visibles les écrans actifs */
+#screenLevel1.active,
+#screenLevel2.active {
+    display: block;
+}
+
+  /* Écran ajout photo */
+.back-button {
+	background: none;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+  
+.modal-content h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+  
+.upload-photo {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+  
+.upload-container {
+	width: 100%;
+	max-width: 400px;
+	padding: 20px;
+	background-color: #F7F8FA;
+	border-radius: 8px;
+	text-align: center;
+}
+  
+.upload-placeholder img {
+	max-width: 50px;
+	margin-bottom: 10px;
+}
+  
+.upload-placeholder p {
+	margin: 5px 0;
+	color: #888;
+}
+  
+.form-group {
+	margin-bottom: 15px;
+}
+  
+label {
+	display: block;
+	margin-bottom: 5px;
+	color: #333;
+}
+  
+/* Stylspéciifique au formulaire de la modale */
+#screenLevel1 input[type="text"],
+#screenLevel1 select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+  
+.submit-btn {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	background-color: #A5A5A5;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+	margin-top: 20px;
+}
+  
+.submit-btn:hover {
+	background-color: #888;
 }
