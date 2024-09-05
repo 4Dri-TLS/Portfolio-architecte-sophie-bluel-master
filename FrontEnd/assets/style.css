@@ -1,4 +1,3 @@
-/******** NON-CONNECTÉ *********/
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -51,6 +50,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
     max-width: 1140px;
@@ -191,6 +191,8 @@ li:hover {
 	width: 100%;
 }
 
+
+/******* Formulaire contact *******/
 #contact {
 	width: 50%;
 	margin: auto;
@@ -236,6 +238,8 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+
+/******* Footer *******/
 footer {
     background-color: white;
     padding: 10px;
@@ -249,7 +253,7 @@ footer nav ul {
 }
 
 
-/***** Login *****/
+/******* Login *******/
 #login {
 	width: 33.33%;
 	margin: auto;
@@ -301,8 +305,7 @@ footer nav ul {
 
 
 
-/* Quand CONNECTÉ */
-
+/******* Quand CONNECTÉ *******/
 .bannière-edit {
 	display: flex;
 	justify-content: center;
@@ -364,12 +367,12 @@ footer nav ul {
 
 
 
-/* Modale */
+/******* Modale *******/
 .modal {
 	display: none; /* Cachée par défaut */
 	position: fixed;
 	z-index: 1;
-	padding-top: 60px;
+	padding-top: 150px;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -382,19 +385,21 @@ footer nav ul {
 .modal-content {
 	background-color: #fefefe;
 	margin: auto;
-	padding: 20px;
 	border: solid 0px;
 	width: 80%;
 	max-width: 900px;
+	width: 630px;
 	position: relative;
 	border-radius: 10px;
 }
 
 .close {
-	color: #aaa;
+	color: black;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
+	margin-top: 20px;
+	margin-right: 25px;
 }
 
 .close:hover,
@@ -405,42 +410,61 @@ footer nav ul {
 }
 
 .gallery-modal {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-	gap: 10px;
-	margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colonnes qui occupent toutes un espace égal */
+    gap: 10px; 
+	row-gap: 20px;
+    margin-top: 20px;
+    justify-content: center; 
 }
 
 .gallery-modal img {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
+    width: 100%; 
+    height: auto;
+    object-fit: cover;
 }
 
 .delete-icon {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	background: rgba(0, 0, 0, 0.5);
-	border-radius: 50%;
-	padding: 5px;
+	max-width: 13px;
+	max-height: 13px;
+	background: black;
+	border-radius: 2px;
+	padding: 2px;
 	cursor: pointer;
+	color: white;
+}
+
+.grey-bar {
+    width: 100%; 
+    height: 1px; 
+    background-color: #ccc; 
+    margin-top: 50px; 
+    margin-bottom: 30px; 
 }
 
 .add-photo-btn {
 	display: block;
-	margin: 20px auto;
 	padding: 10px 20px;
-	background-color: #2C6351;
-	color: white;
 	border: none;
-	border-radius: 5px;
 	cursor: pointer;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 237px;
+	text-align: center;
+	border-radius: 60px ;
 }
 
 /* Gestion des Écrans de la modale */
 .screen-level {
     display: none; /* cache tous les écrans par défaut */
+	padding: 50px 100px;
+
 }
 
 #galleryScreen.active, /* rend visibles les écrans actifs */
@@ -462,7 +486,12 @@ footer nav ul {
   
 .modal-content h2 {
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 26px;
+    font-family: 'Work Sans';
+	font-weight:lighter;
+	color: black;
+	margin-top: 15px;
+	margin-bottom: 50px;
 }
   
 .upload-photo {
@@ -475,21 +504,41 @@ footer nav ul {
 	width: 100%;
 	max-width: 400px;
 	padding: 20px;
-	background-color: #F7F8FA;
-	border-radius: 8px;
+	background-color: #E8F1F6;
+	border-radius: 3px;
 	text-align: center;
 }
-  
-.upload-placeholder img {
-	max-width: 50px;
-	margin-bottom: 10px;
+
+.upload-placeholder {
+	display: grid;
+    align-items: center;
+    justify-items: center;
+    gap: 5px;
+}
+
+.fa-image {
+	font-size: 80px;
+	color: #B9C5CC;
 }
   
-.upload-placeholder p {
+#ajouter-photo-btn {
+	color: #306685;
+	display: inline-block;
+    padding: 10px 20px; 
+    background-color: #CBD6DC; 
+    border-radius: 20px; 
+    font-weight: bold; 
+    text-align: center; 
+    cursor: pointer; 
+    margin-top: 10px; 
+	width: 173px;
+}
+
+#legend-placeholder {
 	margin: 5px 0;
-	color: #888;
+	color: #444444;
 }
-  
+
 .form-group {
 	margin-bottom: 15px;
 }
@@ -500,28 +549,30 @@ label {
 	color: #333;
 }
   
-/* Stylspéciifique au formulaire de la modale */
-#screenLevel1 input[type="text"],
+/* Style spéciifique au formulaire de la modale */
+#screenLevel1 input,
 #screenLevel1 select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+	width: 420px;
+    padding: 0px;
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
   
 .submit-btn {
 	display: block;
-	width: 100%;
-	padding: 10px;
-	background-color: #A5A5A5;
-	color: white;
+	padding: 10px 20px;
 	border: none;
-	border-radius: 5px;
-	font-size: 16px;
 	cursor: pointer;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 237px;
 	text-align: center;
-	margin-top: 20px;
+	border-radius: 60px ;
 }
   
 .submit-btn:hover {

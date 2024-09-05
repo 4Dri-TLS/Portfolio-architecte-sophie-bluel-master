@@ -23,21 +23,26 @@ function generateText(content) {
 }
 
 // Fonction de recherche et d'affichage de projets
+let worksData = null; // Déclare une variable globale
+
 async function recupWorks() {
     try {
         const response = await fetch("http://localhost:5678/api/works");
         if (!response.ok) {
             throw new Error(`Erreur HTTP ! status: ${response.status}`);
         }
-        let works = await response.json();
-        generateFigure(works);
-        
-        
-        return works; // Retourne les projets pour la filtration
+        worksData = await response.json(); // Stocke la donnée dans la variable globale
+        generateFigure(worksData);
+
+        return worksData; // Retourne la donnée pour usage dans la modale
     } catch (error) {
         console.error('Impossible de récupérer les données', error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', async function() {
+    await recupWorks(); // Cherche la donnée une seule fois pour la homepage
+});
 
 function generateFigure(works) {
     const container = document.getElementById('projets');

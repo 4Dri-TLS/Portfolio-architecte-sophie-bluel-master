@@ -135,6 +135,7 @@
 			<div class="gallery-modal" id="galleryGrid">
 				<!-- sera alimenté dynamiquement d'images -->
 			</div>
+			<div class="grey-bar"></div>
 			<button class="add-photo-btn">Ajouter une photo</button>
 		</div>
 
@@ -146,9 +147,9 @@
 				<div class="upload-container">
 					<label for="photoUpload" class="upload-label">
 						<div class="upload-placeholder">
-							<img src="/FrontEnd/assets/icons/placeholder-icon.png" alt="Upload Placeholder">
-							<p>+ Ajouter photo</p>
-							<p>jpg, png : 4mo max</p>
+							<i class="fa-regular fa-image"></i>
+							<p id="ajouter-photo-btn">+ Ajouter photo</p>
+							<p id="legend-placeholder">jpg, png : 4mo max</p>
 						</div>
 						<input type="file" id="photoUpload" accept="image/*" style="display: none;">
 					</label>
@@ -159,15 +160,17 @@
 					<label for="title">Titre</label>
 					<input type="text" id="title" name="title" required>
 				</div>
+			
 				<div class="form-group">
 					<label for="category">Catégorie</label>
 					<select id="category" name="category" required>
 						<option value="" disabled selected>Choisir une catégorie</option>
-						<!-- Options a ajouter dynamiquement -->
-						<option value="cat1">Catégorie 1</option>
-						<option value="cat2">Catégorie 2</option>
+						<!-- Options will be added dynamically -->
 					</select>
 				</div>
+			
+				<div class="grey-bar"></div>
+			
 				<button type="submit" class="submit-btn">Valider</button>
 			</form>
 		</div>

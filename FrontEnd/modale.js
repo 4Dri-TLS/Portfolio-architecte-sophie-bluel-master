@@ -1,85 +1,105 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const modal = document.getElementById('galleryModal');
-  const closeBtn = document.getElementsByClassName('close')[0];
-  const galleryScreen = document.getElementById('galleryScreen');
-  const screenLevel1 = document.getElementById('screenLevel1');
-  const modifierProjetsLink = document.getElementById('modifier-projets');
+    const modal = document.getElementById('galleryModal');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const galleryScreen = document.getElementById('galleryScreen');
+    const screenLevel1 = document.getElementById('screenLevel1');
+    const modifierProjetsLink = document.getElementById('modifier-projets');
+    const galleryGrid = document.getElementById('galleryGrid'); // galleryGrid doit être défini
+    const categorySelect = document.getElementById('category'); // Liste déroulante pour les catégories
+    const photoForm = document.getElementById('photoForm'); // Formulaire pour soumettre la photo
 
-  // Fonction pour ouvrir la modale
-  function openModal() {
-      modal.style.display = 'block';
-      galleryScreen.classList.add('active'); // montre l'écran gallerie
-  }
+    // Fonction pour ouvrir la modale
+    function openModal() {
+        modal.style.display = 'block';
+        galleryScreen.classList.add('active'); // Affiche l'écran galerie
+    }
 
-  // Fonction pour fermer la modale
-  function closeModal() {
-      modal.style.display = 'none';
-      galleryScreen.classList.remove('active'); // cache les écrans a la fermeture
-      screenLevel1.classList.remove('active');
-  }
+    // Fonction pour fermer la modale
+    function closeModal() {
+        modal.style.display = 'none';
+        galleryScreen.classList.remove('active'); // Cache les écrans à la fermeture
+        screenLevel1.classList.remove('active');
+    }
 
-  // Récupérer les images à partir de l'API
-  async function fetchImages() {
-      try {
-          const response = await fetch("http://localhost:5678/api/works");
-          const images = await response.json();
+    // Fonction pour récupérer les catégories et les ajouter à la liste déroulante
+    async function fetchCategories() {
+        try {
+            const response = await fetch("http://localhost:5678/api/categories");
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP ! status: ${response.status}`);
+            }
+            const categories = await response.json();
+            
+            // Efface les options précédentes
+            categorySelect.innerHTML = '<option value="" disabled selected>Choisir une catégorie</option>';
+            
+            // Remplit la liste déroulante avec les catégories
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erreur lors de la récupération des catégories :', error);
+        }
+    }
 
-          // Effacer les images existantes
-          galleryGrid.innerHTML = '';
+    // Fonction pour soumettre un nouveau travail
+    async function submitNewWork(event) {
+        event.preventDefault();
 
-          images.forEach(image => {
-              const imgContainer = document.createElement('div');
-              imgContainer.style.position = 'relative';
+        const formData = new FormData(photoForm); // Collecte les données du formulaire
+        try {
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Inclure le token d'autorisation si nécessaire
+                },
+                body: formData
+            });
 
-              const imgElement = document.createElement('img');
-              imgElement.src = image.imageUrl;
-              imgElement.alt = image.title || 'Image de la galerie';
+            if (response.ok) {
+                console.log('Nouveau travail ajouté avec succès');
+                closeModal(); // Ferme la modale après un ajout réussi
+            } else {
+                console.error('Erreur lors de l\'ajout du nouveau travail');
+            }
+        } catch (error) {
+            console.error('Erreur lors de l\'envoi du formulaire :', error);
+        }
+    }
 
-              console.log('Chargement de l\'image :', image.imageUrl);
+    // Événement de clic sur le lien de modification des projets
+    modifierProjetsLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        if (worksData) { // Vérifie que worksData est disponible
+            openModal(); // Ouvre la modale
+        } else {
+            console.error('Les données des projets ne sont pas disponibles.');
+        }
+    });
 
-              imgElement.onerror = () => {
-                  console.error(`Échec du chargement de l'image à ${image.imageUrl}`);
-                  imgElement.src = 'fallback-image.png';
-              };
+    // Écouteurs d'événements pour la fermeture
+    closeBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 
-              const deleteIcon = document.createElement('span');
-              deleteIcon.className = 'delete-icon';
-              deleteIcon.innerHTML = '🗑️'; // Icône de la corbeille
-              deleteIcon.addEventListener('click', () => {
-                  imgContainer.remove(); // Gérer la suppression de l'image
-              });
+    // Gestion des transitions écran
+    document.querySelector('.add-photo-btn').addEventListener('click', () => {
+        galleryScreen.classList.remove('active');
+        screenLevel1.classList.add('active');
+        fetchCategories(); // Récupère les catégories lors du passage à l'écran d'ajout de photo
+    });
 
-              imgContainer.appendChild(imgElement);
-              imgContainer.appendChild(deleteIcon);
-              galleryGrid.appendChild(imgContainer);
-          });
-      } catch (error) {
-          console.error('Erreur lors de la récupération des images :', error);
-      }
-  }
+    document.getElementById('backToGallery').addEventListener('click', () => {
+        screenLevel1.classList.remove('active');
+        galleryScreen.classList.add('active');
+    });
 
-  // Écouteurs d'événements
-  closeBtn.addEventListener('click', closeModal);
-  window.addEventListener('click', (event) => {
-      if (event.target === modal) {
-          closeModal();
-      }
-  });
-
-  modifierProjetsLink.addEventListener('click', function (event) {
-      event.preventDefault(); // Empêcher le comportement par défaut du lien
-      fetchImages(); // Charger les images avant d'ouvrir la modale
-      openModal();
-  });
-
-  // Handling screen transitions
-  document.querySelector('.add-photo-btn').addEventListener('click', () => {
-      galleryScreen.classList.remove('active');
-      screenLevel1.classList.add('active');
-  });
-
-  document.getElementById('backToGallery').addEventListener('click', () => {
-      screenLevel1.classList.remove('active');
-      galleryScreen.classList.add('active');
-  });
+    // Soumission du formulaire pour ajouter une nouvelle image
+    photoForm.addEventListener('submit', submitNewWork);
 });
