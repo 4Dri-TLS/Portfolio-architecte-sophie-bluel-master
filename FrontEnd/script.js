@@ -23,7 +23,7 @@ function generateText(content) {
 }
 
 // Fonction de recherche et d'affichage de projets
-let worksData = null; // Déclare une variable globale
+let worksData = []; // Déclare une variable globale
 
 async function recupWorks() {
     try {
