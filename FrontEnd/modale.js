@@ -97,7 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 console.log('Image supprimée avec succès');
-                imgContainer.remove(); // Supprimer l'image de la galerie
+                imgContainer.remove(); // Supprimer l'image de la galerie de la modale
+                worksData = worksData.filter(w => w.id!=imageId); // récupérer tous les autres sauf l'image supprimée
+                generateFigure(worksData);
             } else {
                 console.error('Erreur lors de la suppression de l\'image');
             }
@@ -135,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = document.getElementById('title').value;
         const categoryId = categorySelect.value;
 
-        if (!file || !title || !categoryId) {
+        if (file==undefined || !title || !categoryId) {
             console.error("Veuillez remplir tous les champs du formulaire.");
             return; // Stoppe l'envoi si un champ est manquant
         }
@@ -158,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 console.log('Nouveau travail ajouté avec succès');
+                recupWorks();
                 closeModal(); // Ferme la modale après un ajout réussi
             } else {
                 const errorData = await response.json();
@@ -171,13 +174,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Événement de clic sur le lien de modification des projets
     modifierProjetsLink.addEventListener('click', async function(event) {
         event.preventDefault();
-        const images = await fetchImages(); // Récupère les images depuis l'API
-        if (images) {
-            showModalWithImages(images); // Affiche les images dans la modale
+        // const images = await fetchImages(); // Récupère les images depuis l'API
+        // if (images) {
+            showModalWithImages(worksData); // Affiche les images dans la modale
             openModal(); // Ouvre la modale
-        } else {
-            console.error('Les images ne sont pas disponibles.');
-        }
+        // } else {
+        //     console.error('Les images ne sont pas disponibles.');
+        // }
     });
 
     // Écouteurs d'événements pour la fermeture de la modale
