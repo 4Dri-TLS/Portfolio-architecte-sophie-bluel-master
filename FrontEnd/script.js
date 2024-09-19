@@ -82,7 +82,7 @@ async function recupCategories() {
     }
 }
 
-function generateFilters(categories) {
+const generateFilters = (categories) => {
     const container = document.getElementById('boutons-filtre');
     container.innerHTML = ''; // Supprime le contenu initial du conteneur
 

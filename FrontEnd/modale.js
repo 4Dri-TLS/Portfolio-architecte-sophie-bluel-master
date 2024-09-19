@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const uploadIcon = document.querySelector('.fa-image'); // Icone image media 
     const ajouterPhotoBtn = document.getElementById('ajouter-photo-btn'); // bouton "+ Ajouter photo" 
     const legendPlaceholder = document.getElementById('legend-placeholder'); // texte jpg, png : 4mo
+    const submitBtn = document.querySelector('.submit-btn');
 
     // Fonction pour ouvrir la modale
     function openModal() {
@@ -86,7 +87,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fonction pour supprimer une image en utilisant l'API DELETE
     async function deleteImage(imageId, imgContainer) {
         if (!imageId) return;
-
+        const confirmation = confirm("Voulez-vous supprimer ce work ?")
+        if(!confirmation) return;     
         try {
             const response = await fetch(`http://localhost:5678/api/works/${imageId}`, {
                 method: 'DELETE',
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgContainer.remove(); // Supprimer l'image de la galerie de la modale
                 worksData = worksData.filter(w => w.id!=imageId); // récupérer tous les autres sauf l'image supprimée
                 generateFigure(worksData);
+                closeModal();
             } else {
                 console.error('Erreur lors de la suppression de l\'image');
             }
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`Erreur HTTP ! status: ${response.status}`);
             }
             const categories = await response.json();
-            categorySelect.innerHTML = '<option value="" disabled selected></option>';
+            categorySelect.innerHTML = '<option value=""></option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category.id;
@@ -137,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = document.getElementById('title').value;
         const categoryId = categorySelect.value;
 
-        if (file==undefined || !title || !categoryId) {
+        if (!file || !title || !categoryId) {
             console.error("Veuillez remplir tous les champs du formulaire.");
             return; // Stoppe l'envoi si un champ est manquant
         }
@@ -195,6 +198,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.add-photo-btn').addEventListener('click', () => {
         galleryScreen.classList.remove('active');
         screenLevel1.classList.add('active');
+        validateForm();
+        resetForm();
         fetchCategories(); // Récupère les catégories à l'ouverture de l'écran d'ajout de photo
     });
 
@@ -202,6 +207,44 @@ document.addEventListener('DOMContentLoaded', function () {
         screenLevel1.classList.remove('active');
         galleryScreen.classList.add('active');
     });
+
+//Bouton valider vert - méthode validation formulaire
+const validateForm = () => {
+    const isFileSelected = photoUploadInput.files.length > 0;  // Vérifier si un fichier est sélectionné
+    const isTitleFilled = document.getElementById('title').value.trim() !== "";  // Vérifier si le titre est rempli
+    const isCategorySelected = categorySelect.value !== "";  // Vérifier si une catégorie est sélectionnée
+
+    // Activer le bouton de validation si toutes les conditions sont remplies
+    if (isFileSelected && isTitleFilled && isCategorySelected) {
+        submitBtn.disabled = false;
+    } else {
+        submitBtn.disabled = true;
+    }
+}
+
+//Pour reset les entrées du formulaire
+const resetForm = () => {
+
+    document.getElementById('title').value = "";
+    categorySelect.value = "";
+    photoUploadInput.value = "";
+
+    // Réinitialiser le placeholder d'image
+    uploadPlaceholder.style.backgroundImage = '';
+    uploadPlaceholder.style.backgroundSize = '';
+    uploadPlaceholder.style.backgroundPosition = '';
+    uploadIcon.style.display = 'block';
+    ajouterPhotoBtn.style.display = 'block';
+    legendPlaceholder.style.display = 'block'; // Réafficher la légende "jpg, png : 4mo max"
+
+    // Désactiver le bouton de validation
+    submitBtn.disabled = true;
+};
+
+// Vérifier la validité du formulaire lorsque les champs sont modifiés
+    photoUploadInput.addEventListener("change", validateForm);
+    document.getElementById('title').addEventListener("input", validateForm);//input car on veut que l'utilisateur tape quelque chose
+    categorySelect.addEventListener("change", validateForm);//On utilise un changement car on veut que l'utilisateur choisisse une catégorie
 
     // Prévisualisation de l'image au changement de fichier
     photoUploadInput.addEventListener('change', previewImage);
